@@ -1,0 +1,17 @@
+# This is a example config file for the application, if needed create your own config with the name config.dev.yml
+# and run the app with make run_dev
+
+database:
+  host: localhost
+  port: 5432
+  user: postgres
+  password: postgres
+  name: userapi
+  sslMode: disable
+
+gin:
+  mode: debug
+  port: 3000
+
+slog:
+  level: INFO

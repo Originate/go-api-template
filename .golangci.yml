@@ -1,0 +1,253 @@
+# Refer to golangci-lint's example config file for more options and information:
+# https://github.com/golangci/golangci-lint/blob/master/.golangci.reference.yml
+
+# Options for analysis running.
+run:
+  # Timeout for analysis, e.g. 30s, 5m.
+  # Default: 1m
+  timeout: 5m
+
+# output configuration options
+output:
+  # Show statistics per linter.
+  # Default: false
+  show-stats: true
+
+# All available settings of specific linters.
+linters-settings:
+  # Allow using of replace directives
+  gomoddirectives:
+    replace-local: true
+    retract-allow-no-explanation: false
+    exclude-forbidden: false
+
+  asasalint:
+    # Ignore *_test.go files.
+    # Default: false
+    ignore-test: true
+
+  cyclop:
+    # The maximal code complexity to report.
+    # Default: 10
+    max-complexity: 30
+    # The maximal average package complexity.
+    # If it's higher than 0.0 (float) the check is enabled
+    # Default: 0.0
+    package-average: 10.0
+    # Should ignore tests.
+    # Default: false
+    skip-tests: true
+
+  errcheck:
+    # Report about not checking of errors in type assertions: `a := b.(MyStruct)`.
+    # Such cases aren't reported by default.
+    # Default: false
+    check-type-assertions: true
+
+  exhaustive:
+    # Program elements to check for exhaustiveness.
+    # Default: [ switch ]
+    check:
+      - switch
+      - map
+
+  funlen:
+    # Checks the number of lines in a function.
+    # If lower than 0, disable the check.
+    # Default: 60
+    lines: 100
+    # Checks the number of statements in a function.
+    # If lower than 0, disable the check.
+    # Default: 40
+    statements: 50
+    # Ignore comments when counting lines.
+    # Default false
+    ignore-comments: true
+
+  gocognit:
+    # Minimal code complexity to report.
+    # Default: 30 (but we recommend 10-20)
+    min-complexity: 20
+
+  gocritic:
+    # Settings passed to gocritic.
+    # The settings key is the name of a supported gocritic checker.
+    # The list of supported checkers can be find in https://go-critic.github.io/overview.
+    settings:
+      captLocal:
+        # Whether to restrict checker to params only.
+        # Default: true
+        paramsOnly: false
+      underef:
+        # Whether to skip (*x).method() calls where x is a pointer receiver.
+        # Default: true
+        skipRecvDeref: false
+    disabled-checks:
+      - exitAfterDefer
+
+  gomnd:
+    # List of enabled checks, see https://github.com/tommy-muehle/go-mnd/#checks for description.
+    # Default: ["argument", "case", "condition", "operation", "return", "assign"]
+    ignored-functions:
+      - flag.Arg
+      - flag.Duration.*
+      - flag.Float.*
+      - flag.Int.*
+      - flag.Uint.*
+      - os.Chmod
+      - os.Mkdir.*
+      - os.OpenFile
+      - os.WriteFile
+
+  govet:
+    # Enable all analyzers.
+    # Default: false
+    enable-all: true
+    disable:
+      - fieldalignment
+      - assign
+
+    # Settings per analyzer.
+    settings:
+      shadow:
+        # Whether to be strict about shadowing; can be noisy.
+        # Default: false
+        strict: false
+  inamedparam:
+    # Skips check for interface methods with only a single parameter.
+    # Default: false
+    skip-single-param: true
+
+  interfacebloat:
+    # The maximum number of methods allowed for an interface.
+    # Default: 10
+    max: 5
+
+  nakedret:
+    # Make an issue if func has more lines of code than this setting, and it has naked returns.
+    # Default: 30
+    max-func-lines: 0
+
+  nolintlint:
+    # Exclude following linters from requiring an explanation.
+    # Default: []
+    allow-no-explanation: [funlen, gocognit, lll]
+    # Enable to require an explanation of nonzero length after each nolint directive.
+    # Default: false
+    require-explanation: true
+    # Enable to require nolint directives to mention the specific linter being suppressed.
+    # Default: false
+    require-specific: true
+
+  perfsprint:
+    # Optimizes into strings concatenation.
+    # Default: true
+    strconcat: false
+
+  rowserrcheck:
+    # database/sql is always checked
+    # Default: []
+    packages:
+      - github.com/jackc/pgx/v5/pgxpool
+
+linters:
+  # Disable all linters.
+  # Default: false
+  disable-all: true
+  # Enable specific linter
+  # https://golangci-lint.run/usage/linters/#enabled-by-default
+  enable:
+    ## enabled by default
+    - errcheck # check for unchecked errors
+    - gosimple # check for code simplifications
+    - govet # check for common mistakes in go programs
+    - ineffassign # detect when assignments to existing variables are not used
+    - staticcheck # go vet on steroids, see https://staticcheck.io
+    - typecheck # static type checker
+    - unused # find unused code
+    ## disabled by default
+    - asasalint # check for common mistakes in go programs
+    - asciicheck # check for ascii only file
+    - bidichk # check for bidi in string literals
+    - bodyclose # check for missing body close
+    - cyclop # check for high cyclomatic complexity
+    - dupl # check for duplicated code
+    - durationcheck # check for common mistakes in go programs
+    - errname # check for error strings that should be capitalized
+    - errorlint # check for common mistakes in go programs
+    - execinquery # check for exec in query
+    - exhaustive # check for exhaustive switch
+    - exportloopref # check for loop variable captured by a function literal
+    - forbidigo # check for forbidden imports
+    - funlen # check for long functions
+    - gocheckcompilerdirectives # check for compiler directives
+    - gochecknoglobals # check for globals
+    - gochecknoinits # check for init functions
+    - gochecksumtype # check for checksum type
+    - gocognit # check for cognitive complexity
+    - goconst # check for repeated strings that could be replaced by a constant
+    - gocritic # go-critic checks
+    - gocyclo # check for high cyclomatic complexity
+    - godot # check for common mistakes in go programs
+    - goimports # check for goimports (Replaces gofmt)
+    - gomoddirectives # check for go.mod directives
+    - gomodguard # check for go.mod guard
+    - goprintffuncname # check for printf calls with function name
+    - gosec # check for security issues
+    - lll # check for long lines
+    - loggercheck # check for common mistakes in go programs
+    - makezero # check for zero value allocation
+    - mirror # check for common mistakes in go programs
+    - musttag # check for struct tags
+    - nakedret # check for naked returns
+    - nestif # check for nested if
+    - nilerr # check for nil error
+    - nilnil # check for nil nil
+    - noctx # check for context cancellation
+    - nolintlint # check for nolint directives
+    - nonamedreturns # check for unnamed return values
+    - nosprintfhostport # check for sprintf with host and port
+    - perfsprint # check for performance issues with fmt.Sprintf
+    - predeclared # check for predeclared identifiers
+    - protogetter # check for proto getter
+    - reassign # check for reassignments
+    - revive # check for common mistakes in go programs
+    - rowserrcheck # check for rows.Err() != nil
+    - sloglint # check for common mistakes in go programs
+    - spancheck # check for span usage
+    - sqlclosecheck # check for sql.Close() calls
+    - stylecheck # check for style issues
+    - tenv # check for test environment
+    - testableexamples # check for testable examples
+    - testifylint # check for common mistakes in go programs
+    - testpackage # check for test package
+    - tparallel # check for parallel tests
+    - unconvert # check for redundant type conversions
+    - unparam # check for unused function parameters
+    - usestdlibvars # check for use of stdlib vars
+    - wastedassign # check for wasted assignments
+    - whitespace # check for leading whitespace
+    - tagalign # check for struct tag alignment
+    - decorder # check for decoder
+    - interfacebloat # check for interface bloat
+
+issues:
+  # Maximum count of issues with the same text.
+  # Set to 0 to disable.
+  # Default: 3
+  max-same-issues: 30
+
+  exclude-rules:
+    - source: "(noinspection|TODO)"
+      linters: [godot]
+    - source: "//noinspection"
+      linters: [gocritic]
+    - path: "_test\\.go"
+      linters:
+        - bodyclose
+        - dupl
+        - funlen
+        - goconst
+        - gosec
+        - noctx
+        - wrapcheck
